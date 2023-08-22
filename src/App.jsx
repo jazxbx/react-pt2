@@ -1,6 +1,10 @@
 import { useState } from "react";
 
 function App() {
+  //Toggle state
+  const [boxColor, setBoxColor] = useState(false);
+  // Mirror
+  const [mirror, setMirror] = useState("");
   //component
   function GenerateSection(props) {
     return (
@@ -10,8 +14,6 @@ function App() {
       </div>
     );
   }
-
-  const [boxColor, setBoxColor] = useState(false);
 
   return (
     <div>
@@ -26,8 +28,18 @@ function App() {
           setBoxColor(!boxColor);
         }}
       ></div>
-
+      {/* Mirror */}
       <GenerateSection text={"Mirror"} />
+      <input
+        type="text"
+        // destructured mirror
+        value={mirror}
+        onChange={(e) => {
+          // access property of onChange
+          setMirror(e.target.value);
+        }}
+      />
+      <p>{mirror}</p>
       <GenerateSection text={"Counter"} />
       <GenerateSection text={"Race"} />
       <GenerateSection text={"Stopwatch"} />
