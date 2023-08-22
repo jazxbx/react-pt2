@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   //Toggle state
@@ -8,8 +8,13 @@ function App() {
   // Button state
   const [counter, setCounter] = useState(0);
   // Racecar state
-  // const [raceCar, setRaceCar] = useState("");
-  //component
+  const [raceCar, setRaceCar] = useState(0);
+  // timer
+  const [time, setTime] = useState(0);
+  // handle timer
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  // component
   function GenerateSection(props) {
     return (
       <div>
@@ -18,6 +23,36 @@ function App() {
       </div>
     );
   }
+
+  //fn for racecar position
+  const moveRaceCar = (e) => {
+    if (e.key === "ArrowLeft") {
+      setRaceCar(raceCar - 10);
+    } else if (e.key === "ArrowRight") {
+      setRaceCar(raceCar + 10);
+    }
+  };
+
+  // timer handler
+
+  useEffect(() => {
+    let interval;
+    // if time is false ( was ga run) then =>
+    if (isTimerRunning) {
+      // using setInterval i- increment ang state every 1 sec
+      interval = setInterval(() => {
+        // best practice para accurate ang state value vs
+        setTime((prevTime) => prevTime + 1);
+        // setTime(time + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isTimerRunning]);
 
   return (
     <div>
@@ -54,7 +89,7 @@ function App() {
       >
         -
       </button>
-      <span>{counter}</span>
+      <span className="margin">{counter}</span>
       <button
         onClick={() => {
           setCounter(counter + 1);
@@ -62,8 +97,49 @@ function App() {
       >
         +
       </button>
+      {/* Race */}
       <GenerateSection text={"Race"} />
+      <div
+        id="race-car"
+        tabIndex={0}
+        // inline style
+        style={{
+          position: "relative",
+          fontSize: "100px",
+          marginLeft: "0",
+        }}
+        // takes e as parameter and calls it in the moveRaceCar fn
+        onKeyDown={(e) => {
+          console.log("key down");
+          moveRaceCar(e);
+        }}
+      >
+        🏎️
+      </div>
       <GenerateSection text={"Stopwatch"} />
+      <p className="text">{time} seconds</p>
+      <button
+        onClick={() => {
+          setIsTimerRunning(true);
+        }}
+      >
+        Start
+      </button>
+      <button
+        className="margin"
+        onClick={() => {
+          setIsTimerRunning(false);
+        }}
+      >
+        Stop
+      </button>
+      <button
+        onClick={() => {
+          setTime(0);
+        }}
+      >
+        Clear
+      </button>
     </div>
   );
 }
