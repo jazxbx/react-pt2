@@ -5,6 +5,10 @@ function App() {
   const [boxColor, setBoxColor] = useState(false);
   // Mirror
   const [mirror, setMirror] = useState("");
+  // Button state
+  const [counter, setCounter] = useState(0);
+  // Racecar state
+  // const [raceCar, setRaceCar] = useState("");
   //component
   function GenerateSection(props) {
     return (
@@ -39,8 +43,25 @@ function App() {
           setMirror(e.target.value);
         }}
       />
+      {/* input updated mirror state in p tag */}
       <p>{mirror}</p>
+      {/*  */}
       <GenerateSection text={"Counter"} />
+      <button
+        onClick={() => {
+          setCounter(counter - 1);
+        }}
+      >
+        -
+      </button>
+      <span>{counter}</span>
+      <button
+        onClick={() => {
+          setCounter(counter + 1);
+        }}
+      >
+        +
+      </button>
       <GenerateSection text={"Race"} />
       <GenerateSection text={"Stopwatch"} />
     </div>
