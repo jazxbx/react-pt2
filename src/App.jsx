@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 function App() {
   //Toggle state
@@ -14,7 +14,7 @@ function App() {
   // handle timer
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
-  // component
+  // Section Component
   function GenerateSection(props) {
     return (
       <div>
@@ -27,11 +27,18 @@ function App() {
   //fn for racecar position
   const moveRaceCar = (e) => {
     if (e.key === "ArrowLeft") {
-      setRaceCar(raceCar - 10);
+      console.log("left");
+      setRaceCar((raceCar) => raceCar - 10);
     } else if (e.key === "ArrowRight") {
-      setRaceCar(raceCar + 10);
+      setRaceCar((raceCar) => raceCar + 10);
     }
   };
+  // focuses on the element asap as page loads. If wala ni na code kay dili mudagan ang sakyanan dayon. Kinahanglan nako i click ang div/ section then mudagan siya
+  const ref = useRef(null);
+
+  useEffect(() => {
+    ref.current.focus();
+  }, []);
 
   // timer handler
 
@@ -104,15 +111,11 @@ function App() {
         tabIndex={0}
         // inline style
         style={{
-          position: "relative",
-          fontSize: "100px",
-          marginLeft: "0",
+          marginLeft: `${raceCar}px`,
         }}
+        ref={ref}
         // takes e as parameter and calls it in the moveRaceCar fn
-        onKeyDown={(e) => {
-          console.log("key down");
-          moveRaceCar(e);
-        }}
+        onKeyDown={moveRaceCar}
       >
         🏎️
       </div>
